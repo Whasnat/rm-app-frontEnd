@@ -17,6 +17,9 @@ export class UserSignupPage extends Component {
         <div>
           <input type="password" placeholder="Retype your password"></input>
         </div>
+        <div>
+          <button>Sign Up</button>
+        </div>
       </div>
     );
   }

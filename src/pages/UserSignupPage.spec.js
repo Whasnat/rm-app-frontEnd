@@ -44,5 +44,16 @@ describe("UserSignupPage", () => {
       const retypePassword = queryByPlaceholderText("Retype your password");
       expect(retypePassword.type).toBe("password");
     });
+    it("has submit button", () => {
+      const { container } = render(<UserSignupPage />);
+      const button = container.querySelector("button");
+      expect(button).toBeInTheDocument();
+    });
   });
+
+  describe('Interactions', () => {
+    it('has the displayName value into state', () => {
+
+    })
+  })
 });
