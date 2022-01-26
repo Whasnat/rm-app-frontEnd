@@ -1,5 +1,5 @@
 import React from "react";
-import { render, cleanup } from "@testing-library/react";
+import { render, cleanup, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { UserSignupPage } from "./UserSignupPage";
 
@@ -51,9 +51,47 @@ describe("UserSignupPage", () => {
     });
   });
 
-  describe('Interactions', () => {
-    it('has the displayName value into state', () => {
+  describe("Interactions", () => {
+    const changeEvent = (content) => {
+      return {
+        target: {
+          value: content,
+        },
+      };
+    };
 
-    })
-  })
+    it("has the displayName value into state", () => {
+      const { queryByPlaceholderText } = render(<UserSignupPage />);
+      const displayNameInput = queryByPlaceholderText(
+        "Enter your display name"
+      );
+
+      fireEvent.change(displayNameInput, changeEvent("my-display-name"));
+      expect(displayNameInput).toHaveValue("my-display-name");
+    });
+
+    it("has the username value into state", () => {
+      const { queryByPlaceholderText } = render(<UserSignupPage />);
+      const usernameInput = queryByPlaceholderText("Enter your username");
+
+      fireEvent.change(usernameInput, changeEvent("my-username"));
+      expect(usernameInput).toHaveValue("my-username");
+    });
+
+    it("has the password value into state", () => {
+      const { queryByPlaceholderText } = render(<UserSignupPage />);
+      const passwordInput = queryByPlaceholderText("Enter your username");
+
+      fireEvent.change(passwordInput, changeEvent("Password123"));
+      expect(passwordInput).toHaveValue("Password123");
+    });
+
+    it("has the repeat password value into state", () => {
+      const { queryByPlaceholderText } = render(<UserSignupPage />);
+      const passwordRepeatInput = queryByPlaceholderText("Enter your username");
+
+      fireEvent.change(passwordRepeatInput, changeEvent("Password123"));
+      expect(passwordRepeatInput).toHaveValue("Password123");
+    });
+  });
 });
