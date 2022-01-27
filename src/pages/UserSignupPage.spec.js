@@ -93,5 +93,61 @@ describe("UserSignupPage", () => {
       fireEvent.change(passwordRepeatInput, changeEvent("Password123"));
       expect(passwordRepeatInput).toHaveValue("Password123");
     });
+
+    it("calls postSignup when fields are valid and actions are provided in props", () => {
+      const actions = {
+        postSignup: jest.fn().mockResolvedValueOnce({}),
+      };
+
+      const { container, queryByPlaceholderText } = render(
+        <UserSignupPage actions={actions} />
+      );
+
+      const displayNameInput = queryByPlaceholderText(
+        "Enter your display name"
+      );
+
+      const usernameInput = queryByPlaceholderText("Enter your username");
+      const passwordInput = queryByPlaceholderText("Enter your password");
+      const passwordRepeatInput = queryByPlaceholderText(
+        "Retype your password"
+      );
+      const button = container.querySelector("button");
+
+      fireEvent.change(displayNameInput, changeEvent("my-display-name"));
+      fireEvent.change(usernameInput, changeEvent("my-username"));
+      fireEvent.change(passwordInput, changeEvent("Password123"));
+      fireEvent.change(passwordRepeatInput, changeEvent("Password123"));
+      fireEvent.click(button);
+
+      expect(actions.postSignup).toHaveBeenCalledTimes(1);
+    });
+
+    it("does not throw exception when actions are not provided in props", () => {
+      // const actions = {
+      //   postSignup: jest.fn().mockResolvedValueOnce({}),
+      // };
+
+      const { container, queryByPlaceholderText } = render(<UserSignupPage />);
+
+      const displayNameInput = queryByPlaceholderText(
+        "Enter your display name"
+      );
+
+      const usernameInput = queryByPlaceholderText("Enter your username");
+      const passwordInput = queryByPlaceholderText("Enter your password");
+      const passwordRepeatInput = queryByPlaceholderText(
+        "Retype your password"
+      );
+      const button = container.querySelector("button");
+
+      fireEvent.change(displayNameInput, changeEvent("my-display-name"));
+      fireEvent.change(usernameInput, changeEvent("my-username"));
+      fireEvent.change(passwordInput, changeEvent("Password123"));
+      fireEvent.change(passwordRepeatInput, changeEvent("Password123"));
+      fireEvent.click(button);
+
+      expect(() => fireEvent.click(button)).not.toThrow();
+    });
   });
 });

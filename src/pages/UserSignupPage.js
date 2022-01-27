@@ -28,6 +28,10 @@ export class UserSignupPage extends Component {
     this.setState({ passwordRepeat: value });
   };
 
+  onClickSignUp = () => {
+    this.props.actions.postSignup();
+  };
+
   render() {
     return (
       <div>
@@ -63,11 +67,19 @@ export class UserSignupPage extends Component {
           ></input>
         </div>
         <div>
-          <button>Sign Up</button>
+          <button onClick={this.onClickSignUp}>Sign Up</button>
         </div>
       </div>
     );
   }
 }
 
+UserSignupPage.defaultProps = {
+  actions: {
+    postSignup: () =>
+      new Promise((resolve, rejected) => {
+        resolve();
+      }),
+  },
+};
 export default UserSignupPage;
