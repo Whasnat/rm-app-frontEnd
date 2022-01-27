@@ -52,6 +52,7 @@ describe("UserSignupPage", () => {
   });
 
   describe("Interactions", () => {
+
     const changeEvent = (content) => {
       return {
         target: {
@@ -59,6 +60,13 @@ describe("UserSignupPage", () => {
         },
       };
     };
+
+    let button, displayNameInput,usernameInput, passwordInput, passwordRepeatInput;
+
+    const setupForSignup = () => {
+      
+    }
+
 
     it("has the displayName value into state", () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);

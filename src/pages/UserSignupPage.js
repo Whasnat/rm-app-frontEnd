@@ -67,7 +67,8 @@ export class UserSignupPage extends Component {
           ></input>
         </div>
         <div>
-          <button onClick={this.onClickSignUp}>Sign Up</button>
+          <button onClick={this.onClickSignUp}
+          >Sign Up</button>
         </div>
       </div>
     );
