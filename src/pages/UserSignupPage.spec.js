@@ -52,7 +52,6 @@ describe("UserSignupPage", () => {
   });
 
   describe("Interactions", () => {
-
     const changeEvent = (content) => {
       return {
         target: {
@@ -61,12 +60,22 @@ describe("UserSignupPage", () => {
       };
     };
 
-    let button, displayNameInput,usernameInput, passwordInput, passwordRepeatInput;
+    let button,
+      displayNameInput,
+      usernameInput,
+      passwordInput,
+      passwordRepeatInput;
 
-    const setupForSignup = () => {
-      
-    }
-
+    const setupForSubmit = (props) => {
+      const rendered = render(<UserSignupPage {...props} />);
+      const { container, queryByPlaceholderText } = rendered;
+      displayNameInput = queryByPlaceholderText("Enter your display name");
+      usernameInput = queryByPlaceholderText("Enter your username");
+      passwordInput = queryByPlaceholderText("Enter your paassword");
+      passwordRepeatInput = queryByPlaceholderText("Repeat your password");
+      button = container.querySelector("button");
+      return rendered;
+    };
 
     it("has the displayName value into state", () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
@@ -106,55 +115,13 @@ describe("UserSignupPage", () => {
       const actions = {
         postSignup: jest.fn().mockResolvedValueOnce({}),
       };
-
-      const { container, queryByPlaceholderText } = render(
-        <UserSignupPage actions={actions} />
-      );
-
-      const displayNameInput = queryByPlaceholderText(
-        "Enter your display name"
-      );
-
-      const usernameInput = queryByPlaceholderText("Enter your username");
-      const passwordInput = queryByPlaceholderText("Enter your password");
-      const passwordRepeatInput = queryByPlaceholderText(
-        "Retype your password"
-      );
-      const button = container.querySelector("button");
-
-      fireEvent.change(displayNameInput, changeEvent("my-display-name"));
-      fireEvent.change(usernameInput, changeEvent("my-username"));
-      fireEvent.change(passwordInput, changeEvent("Password123"));
-      fireEvent.change(passwordRepeatInput, changeEvent("Password123"));
+      setupForSubmit({ actions });
       fireEvent.click(button);
-
       expect(actions.postSignup).toHaveBeenCalledTimes(1);
     });
 
     it("does not throw exception when actions are not provided in props", () => {
-      // const actions = {
-      //   postSignup: jest.fn().mockResolvedValueOnce({}),
-      // };
-
-      const { container, queryByPlaceholderText } = render(<UserSignupPage />);
-
-      const displayNameInput = queryByPlaceholderText(
-        "Enter your display name"
-      );
-
-      const usernameInput = queryByPlaceholderText("Enter your username");
-      const passwordInput = queryByPlaceholderText("Enter your password");
-      const passwordRepeatInput = queryByPlaceholderText(
-        "Retype your password"
-      );
-      const button = container.querySelector("button");
-
-      fireEvent.change(displayNameInput, changeEvent("my-display-name"));
-      fireEvent.change(usernameInput, changeEvent("my-username"));
-      fireEvent.change(passwordInput, changeEvent("Password123"));
-      fireEvent.change(passwordRepeatInput, changeEvent("Password123"));
-      fireEvent.click(button);
-
+      setupForSubmit();
       expect(() => fireEvent.click(button)).not.toThrow();
     });
   });
