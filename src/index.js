@@ -6,10 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import { UserSignupPage} from './pages/UserSignupPage';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React>
     {/* <App /> */}
     <UserSignupPage />
-  </React.StrictMode>,
+  </React>,
   document.getElementById('root')
 );
 

@@ -68,12 +68,15 @@ describe("UserSignupPage", () => {
 
     const setupForSubmit = (props) => {
       const rendered = render(<UserSignupPage {...props} />);
+
       const { container, queryByPlaceholderText } = rendered;
+
       displayNameInput = queryByPlaceholderText("Enter your display name");
       usernameInput = queryByPlaceholderText("Enter your username");
       passwordInput = queryByPlaceholderText("Enter your paassword");
       passwordRepeatInput = queryByPlaceholderText("Repeat your password");
       button = container.querySelector("button");
+
       return rendered;
     };
 
@@ -94,7 +97,6 @@ describe("UserSignupPage", () => {
       fireEvent.change(usernameInput, changeEvent("my-username"));
       expect(usernameInput).toHaveValue("my-username");
     });
-
 
     //  password input
     it("has the password value into state", () => {
@@ -117,14 +119,33 @@ describe("UserSignupPage", () => {
       const actions = {
         postSignup: jest.fn().mockResolvedValueOnce({}),
       };
+
       setupForSubmit({ actions });
       fireEvent.click(button);
+
       expect(actions.postSignup).toHaveBeenCalledTimes(1);
     });
 
     it("does not throw exception when actions are not provided in props", () => {
       setupForSubmit();
       expect(() => fireEvent.click(button)).not.toThrow();
+    });
+
+    it("call post  user body when fields are valid", () => {
+      const actions = {
+        postSignup: jest.fn().mockResolvedValueOnce({}),
+      };
+
+      setupForSubmit({ actions });
+      fireEvent.click(button);
+
+      const expectedUserObject = {
+        displayName: '',
+        username: '',
+        password: '',
+        passwordRepeat: '',
+      };
+      expect(actions.postSignup).toHaveBeenCalledWith(expectedUserObject);
     });
   });
 });
