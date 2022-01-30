@@ -9,7 +9,7 @@ describe("UserSignupPage", () => {
   describe("Layout", () => {
     it("has header of Sign Up", () => {
       const { container } = render(<UserSignupPage />);
-      const header = container.querySelector("h1");
+      const header = container.querySelector("h2");
       expect(header).toHaveTextContent("Sign Up");
     });
     it("has input for display name", () => {
@@ -58,6 +58,16 @@ describe("UserSignupPage", () => {
           value: content,
         },
       };
+    };
+
+    const mockAsyncDelayed = () => {
+      return jest.fn().mockImplementation(() => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve({});
+          }, 300);
+        });
+      });
     };
 
     let button,
@@ -140,12 +150,24 @@ describe("UserSignupPage", () => {
       fireEvent.click(button);
 
       const expectedUserObject = {
-        displayName: '',
-        username: '',
-        password: '',
-        passwordRepeat: '',
+        displayName: "",
+        username: "",
+        password: "",
+        passwordRepeat: "",
       };
       expect(actions.postSignup).toHaveBeenCalledWith(expectedUserObject);
+    });
+
+    it("does not let the user to click sign up while request is being processed", () => {
+      const actions = {
+        postSignup: mockAsyncDelayed(),
+      };
+
+      setupForSubmit({ actions });
+      fireEvent.click(button);
+
+      fireEvent.click(button);
+      expect(actions.postSignup).toHaveBeenCalledTimes(1);
     });
   });
 });
