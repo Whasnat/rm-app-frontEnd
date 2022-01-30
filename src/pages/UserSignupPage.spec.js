@@ -95,6 +95,8 @@ describe("UserSignupPage", () => {
       expect(usernameInput).toHaveValue("my-username");
     });
 
+
+    //  password input
     it("has the password value into state", () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
       const passwordInput = queryByPlaceholderText("Enter your username");
