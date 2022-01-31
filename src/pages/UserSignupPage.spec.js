@@ -193,7 +193,7 @@ describe("UserSignupPage", () => {
       await waitForDomChange();
 
       const spinner = queryByRole("status");
-      expect(spinner).toBeInTheDocument();
+      expect(spinner).not.toBeInTheDocument();
     });
   });
 });
