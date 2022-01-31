@@ -1,5 +1,5 @@
 import React from "react";
-import { render, cleanup, fireEvent } from "@testing-library/react";
+import { render, cleanup, fireEvent, waitForDomChange } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { UserSignupPage } from "./UserSignupPage";
 
@@ -168,6 +168,32 @@ describe("UserSignupPage", () => {
 
       fireEvent.click(button);
       expect(actions.postSignup).toHaveBeenCalledTimes(1);
+    });
+
+    it("displays spinner while signup request is being processed", () => {
+      const actions = {
+        postSignup: mockAsyncDelayed(),
+      };
+
+      const { queryByRole } = setupForSubmit({ actions });
+      fireEvent.click(button);
+
+      const spinner = queryByRole("status");
+      expect(spinner).toBeInTheDocument();
+    });
+
+    it("hides spinner when api call is finished", async () => {
+      const actions = {
+        postSignup: mockAsyncDelayed(),
+      };
+
+      const { queryByRole } = setupForSubmit({ actions });
+      fireEvent.click(button);
+
+      await waitForDomChange();
+
+      const spinner = queryByRole("status");
+      expect(spinner).toBeInTheDocument();
     });
   });
 });

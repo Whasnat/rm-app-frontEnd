@@ -91,6 +91,14 @@ export class UserSignupPage extends Component {
             onClick={this.onClickSignUp}
             disabled={this.state.pendingApiCall}
           >
+            {this.state.pendingApiCall && (
+              <div
+                className="spinner-border text-light spinner-border-sm mr-1"
+                role="status"
+              >
+                <span className="sr-only"></span>
+              </div>
+            )}
             Sign Up
           </button>
         </div>
