@@ -39,9 +39,14 @@ export class UserSignupPage extends Component {
     };
 
     this.setState({ pendingApiCall: true });
-    this.props.actions.postSignup(user).then((response) => {
-      this.setState({ pendingApiCall: false });
-    });
+    this.props.actions
+      .postSignup(user)
+      .then((response) => {
+        this.setState({ pendingApiCall: false });
+      })
+      .catch((error) => {
+        this.setState({ pendingApiCall: false });
+      });
   };
 
   render() {

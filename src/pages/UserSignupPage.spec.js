@@ -1,5 +1,10 @@
 import React from "react";
-import { render, cleanup, fireEvent, waitForDomChange } from "@testing-library/react";
+import {
+  render,
+  cleanup,
+  fireEvent,
+  waitForDomChange,
+} from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { UserSignupPage } from "./UserSignupPage";
 
@@ -185,6 +190,30 @@ describe("UserSignupPage", () => {
     it("hides spinner when api call is finished", async () => {
       const actions = {
         postSignup: mockAsyncDelayed(),
+      };
+
+      const { queryByRole } = setupForSubmit({ actions });
+      fireEvent.click(button);
+
+      await waitForDomChange();
+
+      const spinner = queryByRole("status");
+      expect(spinner).not.toBeInTheDocument();
+    });
+
+    it("hides spinner when api call is finished with error", async () => {
+      const actions = {
+        postSignup: jest.fn().mockImplementation(() => {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              reject({
+                response: {
+                  data: {},
+                },
+              });
+            }, 300);
+          });
+        }),
       };
 
       const { queryByRole } = setupForSubmit({ actions });
